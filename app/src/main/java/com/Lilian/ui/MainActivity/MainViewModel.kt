@@ -26,7 +26,7 @@ constructor(
         viewModelScope.launch {
             when (mainStateEvent) {
                 is MainStateEvent.GetWeatherEvents -> {
-                    weatherRepository.getTodayForecast(listOf("Nantes", "Paris", "Moscou", "Tokyo", "Montreal", "Rezé")) // We could let the user choose the cities
+                    weatherRepository.getTodayForecast(listOf("Nantes", "Paris", "Moscou", "Tokyo", "Montreal", "Rezé"))
                         .onEach { dataState ->
                             _dataState.value = dataState
                         }

@@ -19,28 +19,32 @@ class CityViewModel
 @ViewModelInject
 constructor(
         private val weatherRepository: WeatherRepository,
-        @Assisted private val savedStateHandle: SavedStateHandle
+        @Assisted protected val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _dataState: MutableLiveData<DataState<List<Forecast>>> = MutableLiveData()
 
     val dataState: LiveData<DataState<List<Forecast>>>
         get() = _dataState
 
-    private val cityName = savedStateHandle.get<String>("city_name")
+    var cityName: String? = savedStateHandle.get<String>("city_name")
 
     fun setStateEvent(mainStateEvent: CityStateEvent) {
         viewModelScope.launch {
             when (mainStateEvent) {
                 is CityStateEvent.GetWeatherEvents -> {
                     if (cityName != null) {
-                        weatherRepository.getWeeklyForecast(cityName)
+                        weatherRepository.getWeeklyForecast(cityName ?: "")
                                 .onEach { dataState ->
                                     _dataState.value = dataState
                                 }
                                 .launchIn(viewModelScope)
                     } else {
-                        //An error should be displayed...
+                        setStateEvent(CityStateEvent.Error)
                     }
+                }
+
+                is CityStateEvent.Error -> {
+                    //Do something...
                 }
 
                 is CityStateEvent.None -> {
@@ -54,5 +58,6 @@ constructor(
 
 sealed class CityStateEvent {
     object GetWeatherEvents : CityStateEvent()
+    object Error : CityStateEvent()
     object None : CityStateEvent()
 }

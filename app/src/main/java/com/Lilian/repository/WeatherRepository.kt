@@ -16,14 +16,14 @@ class WeatherRepository
 constructor(
         private val weatherApi: WeatherApi
 ) {
-    suspend fun getTodayForecast(cities: List<String>): Flow<DataState<List<Forecast>>> = flow {
+    fun getTodayForecast(cities: List<String>): Flow<DataState<List<Forecast>>> = flow {
         emit(DataState.Loading)
         var forecasts: MutableList<Forecast> = mutableListOf()
 
         try {
             coroutineScope {
                 cities.forEach { cityName ->
-                    launch { // this will allow us to run multiple tasks in parallel
+                    launch {
                         val localWeather: Forecast? = weatherApi.getTodayForecast(
                                 cityName,
                                 "fr"
@@ -40,7 +40,7 @@ constructor(
         }
     }
 
-    suspend fun getWeeklyForecast(city: String): Flow<DataState<List<Forecast>>> = flow {
+    fun getWeeklyForecast(city: String): Flow<DataState<List<Forecast>>> = flow {
         emit(DataState.Loading)
         try {
             val forecasts =

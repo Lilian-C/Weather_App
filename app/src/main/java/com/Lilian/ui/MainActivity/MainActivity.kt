@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity(), WeatherAdapter.WeatherItemListener {
         // Display circular loading
     }
 
-    private fun populateRecyclerView(cities: List<Forecast>) {
-        if (cities.isNotEmpty()) adapter.setItems(ArrayList(cities))
+    private fun populateRecyclerView(blogs: List<Forecast>) {
+        if (blogs.isNotEmpty()) adapter.setItems(ArrayList(blogs))
     }
 
     private fun setupRecyclerView() {

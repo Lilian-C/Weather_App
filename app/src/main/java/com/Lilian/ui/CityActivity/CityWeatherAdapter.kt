@@ -41,9 +41,11 @@ class CityWeatherAdapter(private val listener: CityWeatherItemListener) : Recycl
     override fun onBindViewHolder(holder: CityWeatherViewHolder, position: Int) {
         val forecast = items[position]
 
+        val forecastDate = ""
+
         if (forecast.date != null) {
             val milliDate = Date(forecast.date!! * 1000)
-            val frenchDateFormatter = SimpleDateFormat("dd MMMM kk:mm", Locale.FRANCE)
+            val frenchDateFormatter = SimpleDateFormat("dd MMMM", Locale.FRANCE)
             holder.textTitle.text = frenchDateFormatter.format(milliDate)
         }
 
@@ -79,7 +81,7 @@ class CityWeatherViewHolder(itemView: View, private val listener: CityWeatherAda
     }
 
     override fun onClick(v: View?) {
-        // Do something else ?
+        //listener.onClickedWeather(textTitle.text)
     }
 }
 
